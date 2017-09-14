@@ -1,0 +1,22 @@
+{
+    "name": "purpose/template-engine",
+    "description": "A view engine",
+    "version": "1.0.0",
+    "type": "package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shazzad Hossain",
+            "email": "argshub@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "TemplateEngine\\": "src/TemplateEngine/"
+        }
+    }
+}
