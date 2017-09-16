@@ -1,7 +1,6 @@
 {
     "name": "purpose/template-engine",
     "description": "A view engine",
-    "version": "1.0.0",
     "type": "package",
     "license": "MIT",
     "authors": [
@@ -18,10 +17,9 @@
             "TemplateEngine\\": "src/TemplateEngine/"
         }
     },
-    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "1.0.1"
         }
     }
 }
