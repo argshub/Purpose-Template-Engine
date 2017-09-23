@@ -19,8 +19,10 @@ class ViewPathProcessor
 
     static function processViewPath(string &$sourceOfFile) {
         $sourceOfFile = CharacterHelper::removeCharacterFromBothSide($sourceOfFile, ".");
+        $sourceOfFile = CharacterHelper::removeCharacterFromBothSide($sourceOfFile, "/");
         $sourceOfFile = CharacterHelper::removeCharacterFromBothSide($sourceOfFile, "\\");
         $sourceOfFile = str_replace(".", "\\", $sourceOfFile);
+        $sourceOfFile = str_replace("/", "\\", $sourceOfFile);
         $sourceOfFile .= ".ps.php";
     }
 }

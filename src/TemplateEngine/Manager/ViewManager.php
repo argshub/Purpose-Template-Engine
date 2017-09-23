@@ -26,7 +26,7 @@ class ViewManager
 
     public function __construct()
     {
-        $this->compiler = new PurposeCompiler(self::$path);
+        $this->compiler = new PurposeCompiler();
     }
 
     public static function getPath()

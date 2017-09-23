@@ -12,6 +12,7 @@ namespace TemplateEngine;
 use TemplateEngine\Manager\ViewManager;
 use TemplateEngine\Exceptions\PathNotDefined;
 use TemplateEngine\Helper\CharacterHelper;
+use TemplateEngine\PathProcess\ViewPathProcessor;
 
 
 abstract class PurposeTemplateEngine
@@ -21,12 +22,18 @@ abstract class PurposeTemplateEngine
     public function view(string $fileSource, ...$data) {
         if(!$this->path) throw new PathNotDefined("path not defined, define a path property with full path specification");
         $this->processPathAndDirectory();
-        if($this->isCache()) $this->cacheView();
-        else {
-            $file = $this->compileAndProcessViewData($fileSource);
+        $file = $fileSource;
+        if($this->isCache($file)) {
             foreach ($data as $datum)
                 foreach ((array)$datum as $item => $value)
                     ${$item} = $value;
+            require_once $fileSource;
+        }
+        else {
+            foreach ($data as $datum)
+                foreach ((array)$datum as $item => $value)
+                    ${$item} = $value;
+            $file = $this->compileAndProcessViewData($fileSource);
             require_once $file;
         }
     }
@@ -35,7 +42,16 @@ abstract class PurposeTemplateEngine
         return null;
     }
 
-    private function isCache() {
+    private function isCache(string &$fileSource) {
+        ViewPathProcessor::processViewPath($fileSource);
+        $file = $this->path.$fileSource;
+        if(!file_exists($file)) return false;
+        $file = sha1(filesize($file));
+        $file = $this->path."cache\\".$file;
+        if(file_exists($file)) {
+            $fileSource = $file;
+            return true;
+        }
         return false;
     }
 
@@ -54,8 +70,10 @@ abstract class PurposeTemplateEngine
     }
 
     private function writeAndViewTemplateData(string $fileSource, string $viewData) {
-        $fileSource = sha1($fileSource);
-        $fileSource = $this->path."cache/".$fileSource;
+        ViewPathProcessor::processViewPath($fileSource);
+        $file = $this->path.$fileSource;
+        $fileSource = sha1(filesize($file));
+        $fileSource = $this->path."cache\\".$fileSource;
         file_put_contents($fileSource, $viewData);
         return $fileSource;
     }
